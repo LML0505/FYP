@@ -1,0 +1,86 @@
+{% extends "mw/base.html" %}
+{% load static %}
+{% block main_body %}                
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-header">
+                  <h2 class="box-title"> <span class="glyphicon glyphicon-calendar" aria-hidden="true">EDIT ACCOUNT</h2>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form class="form-horizontal" action="{% url 'web_user_update' user.id %}" method = "POST">
+                {% csrf_token %}
+                <div class="box-body">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Account ：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="text" name="username" readonly value="{{user.account}}" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" value = "{{user.nickname}}"class="col-sm-2 control-label">Nickname：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="text" name="nickname" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Current status：</label>
+                    <div class="controls">
+                      &nbsp; &nbsp;
+                      <input type="radio" name="status" class="input-xlarge" value="1" 
+                      {% if user.status == 1 %}checked{% endif %} /> Farmer
+                       &nbsp; &nbsp; 
+                      <input type="radio" name="status" class="input-xlarge" value="2" 
+                      {% if user.status == 2 %}checked{% endif %} /> cropScience
+                       &nbsp; &nbsp; 
+                      <input type="radio" name="status" class="input-xlarge" value="3" 
+                      {% if user.status == 3 %}checked{% endif %} /> DataAnalyst
+                        &nbsp; &nbsp; 
+                      <input type="radio" name="status" class="input-xlarge" value="4" 
+                      {% if user.status == 6 %}checked{% endif %} /> Admin
+                      &nbsp; &nbsp;
+                      <input type="radio" name="status" class="input-xlarge" value="8" 
+                      {% if user.status == 8 %}checked{% endif %} /> Suspend
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="nputEmail3" class="col-sm-2 control-label">Password：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="password" name="password" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Re_Password：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="password" name="repassword" class="form-control" >
+                    </div>
+                  </div>
+                
+    
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">submit</button> &nbsp; 
+                    <button type="submit" class="btn btn-default">reset</button>
+                  <div class="col-sm-offset-2 col-sm-10">
+                </div>
+                <!-- /.box-footer -->
+              </form>
+            </div>
+            <!-- /.box -->
+          </div>
+        </div>
+  
+      </section>
+      <!-- /.content -->
+{% endblock %}
+

@@ -1,0 +1,65 @@
+{% extends 'mobile/base.html' %}
+{% load static %}
+
+{% block mainbody %}
+<!--头部-->
+<header>
+    <div class="header" style="background-color: #000;">
+        <h1>Login Page</h1>
+       
+    </div>
+</header>
+
+<!--内容区-->
+<article class="main-container loginContent">
+    <div style="text-align:center;padding:10px;color: #f00;">{{info}}</div>
+<form action="{% url 'mobile_dologin' %}" method="post">
+	{% csrf_token %}
+	<div class="list">
+        <div class="form-group has-feedback" style="height:30px">
+            <span >account: </span> <input  style="width:252px" type="text" name="username" placeholder="account">
+         </div>
+         <div class="form-group has-feedback" style="height:30px">
+            <span >password: </span><input style="width:239px;border: 1px solid #000;" type="password" name="pass"  placeholder="password">
+         </div>
+            <div class="form-group has-feedback" style="height:30px">
+                <span >verify code : </span>
+                <input type="text" name="code" style="display:inline;width:100px;" class="form-control"  placeholder="verify code">
+                   <img src="{% url 'mobile_verify'%}" onclick="this.src='{% url 'mobile_verify' %}?sn='+Math.random()" style="float:right;margin:5px 20px;" />
+              </div>
+    </div>
+    <br>
+    <div class="button" ><button style="background-color: #333;" type="submit">Login</button></div>
+</form>
+<br>
+    <a style="text-decoration:underline; color: blue;" href="{% url 'mobile_regis' %}">New User? Create Account</a>
+
+    
+</article>
+
+{% endblock %}
+
+{% block myjavascript %}
+<script type="text/javascript">
+	$("button:contains('点击获取')").click(function(){
+		bt = $(this);
+		if(bt.html() != "点击获取"){
+			return;
+		}
+		var phone = $("#name").val();
+		//$.get();
+		bt = $(this);
+		var t=60;
+		bt.html(t+"秒")
+		var mytime = setInterval(function(){
+			t= t-1;
+			bt.html(t+"秒")
+			if(t <= 0){
+				clearInterval(mytime)
+				bt.html("点击获取");
+			}
+		},1000);
+		
+	});
+</script>
+{% endblock %}

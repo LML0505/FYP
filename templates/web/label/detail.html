@@ -1,0 +1,162 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% block main_body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Upload History
+        <small>Upload History</small>
+      </h1>
+      <ol class="breadcrumb">
+       
+        <li><a href="{% url 'web_label_index' 1 %}"><i class="fa fa-dashboard"></i> Label History</a></li>
+        <li class="active">History </li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title"><i class="fa fa-calendar"></i> Upload History</h3>
+              
+              <div class="box-tools">
+                <form action="{% url 'web_label_detail' lid=label pIndex=1 %}" method="get">
+                   
+                 <div class="input-group input-group-sm" style="width:180px; float: left;">
+                 
+                  <span>From :</span><input type="text" name="from_keyword"  placeholder="format:yyyy-mm-dd">
+                 </div>
+                  <div class="input-group input-group-sm" style="width:195px; float: left;">
+                  <span>To:</span><input type="text" name="keyword"  placeholder="format:yyyy-mm-dd">
+                  <div class="input-group-btn">
+                      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                  </div>
+              </form>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                <tr>
+                  <th>Sequence</th>
+                  <th>Picture</th>
+                  <th>Predict </th>
+                  <th>num</th>
+                  <th>label</th>
+                  <th>comment</th>
+                  <th>create_at</th>
+                  <th>Operation</th>
+                </tr>
+                {% for vo in piclist %}
+                <tr>
+                  <td width="10%">{{ forloop.counter }}</td>
+                  <td> <img class="img"  src="{% static 'uploads/picture'%}/{{ vo.submit_pic }}"  width="35"></td>
+                  <td> <img class="img" src="{% static 'result_img_pre'%}/{{ vo.predict_pic }}"  width="35"></td>
+                  <td>{{ vo.count_result }}</td>
+                  <td>{{ vo.label }}</td>
+                  <td>{{ vo.comment }}</td>
+                  <td width="10%">{{ vo.create_at|date:'Y-m-d' }}</td>
+                  <td width="20%">
+                    
+                    <a type="button" href="{% url 'web_label_change' vo.id %}" class="btn btn-success btn-xs">
+                      <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Relabel</a>
+                        <button type="button" onclick="doDelete('{% url 'web_label_detail_del' vo.id %}')" class="btn btn-danger btn-xs">
+                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button >
+                      
+                   
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>     
+            <div id="divZoom" class="divZoom" >
+              <img id="imgZoom" style="width:100%;" />
+            </div> 
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+              <ul class="pagination pagination-sm no-margin pull-right">
+                <li><a href="{% url 'web_label_detail' lid=label pIndex=pdex|add:-1 %}?{{mywhere|join:'&'}}">&laquo;</a></li>
+                {% for p in plist %}
+                  <li {% if pdex == p %}class="active"{% endif %}><a href="{% url 'web_label_detail' lid=label pIndex=p %}?{{mywhere|join:'&'}}">{{ p }}</a></li>
+                {% endfor %}
+                <li><a href="{% url 'web_label_detail' lid=label pIndex=pdex|add:1 %}?{{mywhere|join:'&'}}">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+    <style>
+      .divZoom {
+              display: inline;
+              position: absolute;
+              width: 50%;
+              height: 50%;
+              top: 8%; 
+              left:120px;
+      
+  </style>
+  <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+  <script type="text/javascript">
+        //自定义一个用于实现Ajax信息删除的函数
+        function doDelete(del_url) {
+            Modal.confirm({
+                msg: "are you sure to delete ？",
+                title: ' reminder ',
+                btnok: 'YES',
+                btncl: 'NO'
+            }).on(function(e) {
+                if (e) { //判断是否点击了确定按钮
+                    $.ajax({
+                        type: 'get',
+                        url: del_url,
+                        dataType: 'json',
+                        async: false,
+                        success: function(res) {
+                            Modal.alert({
+                                msg: res.info,
+                                title: ' reminder',
+                                btnok: 'YES',
+                                btncl: 'NO'
+                            });
+                            window.location.reload(); //刷新当前页面. refresh the page after delete 
+                        },
+                    });
+                }
+            });
+        }
+        $(function () {
+              //放大
+              $(".img").click(function () { 
+                  $("#divZoom").hide(100);
+   
+                  var img = $(this);
+                  var top = img.position().top;
+                  var left = img.position().left;
+                  var src = img[0].src;
+   
+                 
+                  $("#imgZoom").attr("src", src);//绑定图片地址  
+   
+                  $("#divZoom").show(100);//弹出图片放大层
+                  $("html,body").animate({ scrollTop: top }, 100);//滚动
+              });
+              //关闭
+              $("#divZoom").click(function () {
+                  $("#divZoom").hide(100);
+              });
+          });
+  
+                
+   
+    </script>
+
+{% endblock %}

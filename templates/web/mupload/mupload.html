@@ -1,0 +1,91 @@
+{% extends "web/base.html" %}
+{% load static %}
+
+
+
+{% block main_body %}
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Upload 
+            <small>Count Picture</small>
+          </h1>
+          <ol class="breadcrumb">
+            <li><a href="{% url 'web_index' %}"><i class="fa fa-dashboard"></i> Homepage</a></li>
+            <li class="active">upload</li>
+          </ol>
+      
+    </section>
+    <form class="form-horizontal" action="{% url 'web_mpicture_upload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+         <div class="box-body">
+          <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">Picture：</label>
+            <div class="col-sm-4">
+              <input type="file" name="cover_pic" multiple="multiple"/>
+            </div>
+          </div>
+            <div class="form-group">
+              <label for="nputEmail3" class="col-sm-2 control-label">label For Pictures：</label>
+
+              <div class="col-sm-4">
+                <input type="text" name="label" class="form-control" >
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="nputEmail3" class="col-sm-2 control-label">comment：</label>
+
+              <div class="col-sm-4">
+                <input type="text" name="comment" class="form-control" >
+              </div>
+            </div>
+          
+
+        </div>
+        <!-- /.box-body -->
+        
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Count</button> &nbsp; 
+            <button type="reset" class="btn btn-primary">Reset</button> &nbsp; 
+            
+         </div>
+
+        <!-- /.box-footer -->
+      </form>
+   
+    <!-- /.box -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <!-- /.box-header -->
+        
+ 
+  
+   
+    
+   <style>
+    .uppic{
+      width:200px;height:100px;
+      left:100px;
+      float:left;
+      margin: 5px;
+    }
+      
+    </style>
+   
+   
+
+
+    </section>
+    <!-- /.content -->
+{% endblock %}
+
+
+{% block loadjavascript %}
+<script type="text/javascript">
+    
+      
+</script>
+{% endblock %}

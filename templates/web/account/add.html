@@ -1,0 +1,65 @@
+{% extends "web/base.html" %}
+
+{% block main_body %}                
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-header">
+                  <h2 class="box-title"> <span class="glyphicon glyphicon-calendar" aria-hidden="true">Add ACCOUNT</h2>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form class="form-horizontal" action="{% url 'web_user_insert' %}" method = "POST">
+                {% csrf_token %}
+                <div class="box-body">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Account ：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="text" name="username" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Nickname：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="text" name="nickname" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="nputEmail3" class="col-sm-2 control-label">Password：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="password" name="password" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Re_Password：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="password" name="repassword" class="form-control" >
+                    </div>
+                  </div>
+                
+    
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">submit</button> &nbsp; 
+                    <button type="submit" class="btn btn-default">reset</button>
+                  <div class="col-sm-offset-2 col-sm-10">
+                </div>
+                <!-- /.box-footer -->
+              </form>
+            </div>
+            <!-- /.box -->
+          </div>
+        </div>
+  
+      </section>
+      <!-- /.content -->
+{% endblock %}

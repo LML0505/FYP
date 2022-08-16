@@ -1,0 +1,83 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% block main_body %}                
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-header">
+                 
+                    <section class="content-header">
+                        <h2 class="box-title"> <span class="glyphicon glyphicon-calendar" aria-hidden="true">LABEL PICTURE</h2>
+                        <ol class="breadcrumb">
+                         
+                          <li><a href="{% url 'web_uhistory' 1 %}"><i class="fa fa-dashboard"></i> uploadHistory</a></li>
+                          <li class="active">Label </li>
+                        </ol>
+                      </section>
+              </div>
+              <!-- /.box-header -->
+              <!-- form start -->
+              <form class="form-horizontal" action="{% url 'web_history_dolabel' obj.id %}" method = "POST">
+                {% csrf_token %}
+                <div class="box-body">
+                  <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">picture_name ：</label>
+                      
+                    <div class="col-sm-4">
+                      <input type="text" name="username" readonly value="{{obj.submit_pic}}" class="form-control" >
+                    </div>
+                  </div>
+                  <div>
+                    <img class="img"  src="{% static 'uploads/picture'%}/{{ obj.submit_pic }}"  width="35">
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEmail3" readonly value = "{{obj.num}}"class="col-sm-2 control-label">Count：</label>
+  
+                    <div class="col-sm-4">
+                        <input type="text" name="username" readonly value="{{obj.count_result}}" class="form-control" >
+                    </div>
+                  </div>
+                  
+                  </div>
+                  <div class="form-group">
+                    <label for="nputEmail3" class="col-sm-2 control-label">label：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="text" name="label" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="nputEmail3" class="col-sm-2 control-label">comment：</label>
+  
+                    <div class="col-sm-4">
+                      <input type="text" name="comment" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      </div>
+
+                
+    
+                </div>
+                <!-- /.box-body -->
+              
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">submit</button> &nbsp; 
+                    <button type="submit" class="btn btn-default">reset</button>
+                  <div class="col-sm-offset-2 col-sm-10">
+                
+                <!-- /.box-footer -->
+              </form>
+            </div>
+            <!-- /.box -->
+          </div>
+        </div>
+  
+      </section>
+      <!-- /.content -->
+{% endblock %}
+
+

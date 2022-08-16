@@ -1,0 +1,54 @@
+{% extends 'web/base.html' %} {% block main_body %}
+<!-- Content Header (Page header) -->
+
+<section class="content-header">
+    <h1>
+        User Manual
+        <small>Maize Counting system</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'web_index' %}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">manual</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content container-fluid">
+    <h3><b>Step-by-step User Instruction</b></h3>
+
+    <h4><b>Step 1 - Select, Upload, Label</b></h4>
+        <p>
+            Go to Upload Count.<br/>
+            Click and choose single or multiple image file(s) for uploading and counting.<br/>
+            Label the image file(s) in Label History.<br /> 
+            Insert the comments in the comment column.<br /> 
+   
+        </p>
+        <h4><b>Step 2 - Visualise presentation</b></h4>
+        <p>
+            After clicking on the count button, wait for count results appear in the table.<br />
+            To enlarge image file, click on the image in the table.<br />  
+            Click on the image again to return back to normal.<br />
+        </p>
+        <h4><b>Step 3 - Search, Delete </b></h4>
+        <p>
+            Click Upload History on the left side navigation bar. <br />
+            Read all the image file(s) uploaded for count. <br/>
+            Click the Search button to search for the result. <br/>
+            Click the Delete button to delete unwanted result.<br /> 
+
+        </p>  
+        <h4><b>Step 4 - Label History </b></h4>
+        <p>
+            Click Label History button on the left navigation bar.<br/>
+            To see all the labeled image file(s) information.<br/>
+            Click the View Detail button to see all the image file(s) under the same lable.<br/>
+            Click the Delete button to delete unwanted result.<br />
+        </p>    
+      
+    
+   
+</section>
+
+<!-- /.content -->
+{% endblock%}

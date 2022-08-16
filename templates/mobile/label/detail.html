@@ -1,0 +1,178 @@
+{% extends 'mobile/base.html' %}
+{% load static %}
+
+{% block mainbody %}
+	<!--头部-->
+	<header class="search" id="search" style="position: static; background-color: #000;">
+		<div class="header" style="background-color: #000">
+			<h1 style="font-weight: bold;font-size: 20px;">Detail </h1>
+            
+		</div>
+		<!--通知公告/客服电话-->
+	</header>
+
+	<!--搜索内容-->
+	<div class="search-content" id="search-content">
+		<i class="icon-font"></i>
+	</div>
+
+	<!--内容区-->
+	
+		
+		<!--左侧栏目-->
+		<div class="sortNav" style="font-size: 20px;float:left;position:static;height:1500px;border-right:1px solid #000;border-left: 1px solid #000;background-color: #333;color:white">
+			
+			<a class ="afont" href="{% url 'mobile_index' %}"  style="color:white;">Home</a>
+			<a class ="afont" href="{% url 'mobile_upload' %}" style="color:white;">Upload</a>
+			<a class ="afont" href="{% url 'mobile_history' 1 %}" style="color: white ;">History</a>
+			<a class ="afont" href="{% url 'mobile_label_index' 1%}" style="color: green;">Label</a>
+			<div style="height:220px"></div>
+			<a class ="afont" href="{% url 'mobile_logout' %}" style="color: white;">Exit</a>
+		</div>
+		
+		<!--右侧产品-->
+	   <div style="height: 1500px; width: 5px; float: left;"></div>
+			<div style="height:1500px;font-size: large; background-color: white">
+                <div class="box-tools">
+                    
+                    <form action="{% url 'mobile_label_detail' lid=label pIndex=1 %}" method="get">
+                       
+                     <div class="input-group input-group-sm" style="width:230px; float: left;">
+                     
+                      <span>From :</span><input type="text" name="from_keyword"  placeholder="format:yyyy-mm-dd">
+                     </div>
+                      <div class="input-group input-group-sm" style="width:230px; float: left;">
+                      <span>To:</span><input type="text" name="keyword"  placeholder="format:yyyy-mm-dd">
+                      
+                          <button type="submit" class="btn btn-default">Search</button>
+                      
+                      </div>
+                  </form>
+                  </div>
+                  <div style="height:5px"></div>
+                  <div>
+                    <table style="width:235px;">
+                        <tr>
+                            <th>Seq</th>
+                            <th>Pic</th>
+                            <th>Pre </th>
+                            <th>num</th>
+                            <th>label</th>
+                            <th>create_at</th>
+                            <th>Ops</th>
+                          </tr>
+                          {% for vo in piclist %}
+                          <tr>
+                            <td width="10%">{{ forloop.counter }}</td>
+                            <td> <img class="img"  src="{% static 'uploads/picture'%}/{{ vo.submit_pic }}"  width="30"></td>
+                            <td> <img class="img" src="{% static 'result_img_pre'%}/{{ vo.predict_pic }}"  width="30"></td>
+                            <td>{{ vo.count_result }}</td>
+                            <td width="10%">{{ vo.label }}</td>
+                            <td width="10%">{{ vo.create_at|date:'Y-m-d' }}</td>
+                            <td width="20%">
+                              
+                              <a style="font-size: 15px;width:41px;height:15px;border:1px solid #000;"type="button" href={% url 'mobile_label_change' vo.id %} >
+                                <span aria-hidden="true"></span> Label</a>
+                                  <a style="font-size:13px;width:90%;height:15px;border:1px solid #000;" type="button" onclick="return doDelete();" href="{% url 'mobile_label_detail_del' vo.id %}" >
+                                <span  aria-hidden="true"></span> Delete</a >
+                                
+                             
+                            </td>
+                          </tr>
+                      {% endfor %}
+                      <div id="divZoom" class="divZoom" >
+                        <img id="imgZoom" style="width:100%;" />
+                      </div> 
+                    </table>
+                    <br>
+                    <div >
+                        <ul style="width:230px">
+                        
+                          
+                  <li style="width:40%;margin-left: 5% ;border: 1px solid #000;"><a href="{% url 'mobile_label_detail' lid=label pIndex=pdex %}?{{mywhere|join:'&'}}">Page:{{ pdex }} &nbsp</a></li>
+                 
+                  <li style="width:40%;margin-left: 5% ;border: 1px solid #000;"><a href="{% url 'mobile_label_detail' lid=label pIndex=maxpages %}?{{mywhere|join:'&'}}">Last:{{ maxpages }} </a></li>
+                  <br><br>
+                  <li style="width:40%;margin-left: 5%;border: 1px solid #000;"><a href="{% url 'mobile_label_detail' lid=label pIndex=pdex|add:-1 %}?{{mywhere|join:'&'}}"> Previous &nbsp </a></li>
+                <li style="width:40%;margin-left: 5%;border: 1px solid #000;"><a href="{% url 'mobile_label_detail' lid=label pIndex=pdex|add:1 %}?{{mywhere|join:'&'}}">Next</a></li>
+                <br> <br>
+                <li style="width:40%;margin-left: 30%;border: 1px solid #000;"><a href=" {% url 'mobile_label_index'  pIndex=1 %}">Back</a></li>
+                        </ul>
+                      </div>
+                 
+                  </div>
+			   
+			</div>
+
+        </article>
+
+        <!--底部栏目-->
+        <menu style="height:5rem;"> 
+            <img class="logoimg" src="{% static 'web/fyplogo.png'%}">
+            <nbsp></nbsp> Maize Counting System 
+        </menu>
+        
+        <!--弹出圈圈loading-->
+    <style>
+         .logoimg{width:100%;height:5rem;}
+         .sortNav a{font-size: 20px;font-weight: bold;}
+         .uppic{
+          width:70px;height:40px;
+          left:10%;
+          float:left;
+          margin: 1px;
+          
+        }
+        .divZoom {
+                  display: inline;
+                  position: absolute;
+                  width: 80%;
+                  height: 80%;
+                  top:30%; 
+                  left:10%;
+        }
+        table,table tr th, table tr td { border:1px solid #000; font-size: 10px;}
+        table td {height:40px}
+        ul, ul li {float: left;}
+    </style>
+    {% endblock %}
+    
+    
+    {% block myjavascript %}
+    <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+                  //放大
+                  $(".img").click(function () { 
+                      $("#divZoom").hide(100);
+       
+                      var img = $(this);
+                      var top = img.position().top;
+                      var left = img.position().left;
+                      var src = img[0].src;
+       
+                     
+                      $("#imgZoom").attr("src", src);//绑定图片地址  
+       
+                      $("#divZoom").show(100);//弹出图片放大层
+                      $("html,body").animate({ scrollTop: top }, 100);//滚动
+                  });
+                  //关闭
+                  $("#divZoom").click(function () {
+                      $("#divZoom").hide(100);
+                  });
+              });
+              function doDelete() {
+                if(confirm("R u sure to delete?"))
+                 {
+                     return true;
+                     window.location.reload();
+                 }else{
+                     return false;
+                 }
+            }
+             
+            
+          
+    </script>
+    {% endblock %}

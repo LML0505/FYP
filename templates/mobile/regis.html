@@ -1,0 +1,90 @@
+{% extends 'mobile/base.html' %}
+{% load static %}
+
+{% block mainbody %}
+<!--头部-->
+<header>
+    <div class="header" style="background-color: #000;">
+        <h1>Registration  Page</h1>
+       
+    </div>
+</header>
+
+<!--内容区-->
+<article class="main-container loginContent">
+    <div style="text-align:center;padding:10px;color: #f00;">{{info}}</div>
+<form action="{% url 'mobile_doregis' %}" method="post">
+	{% csrf_token %}
+      <div class="form-group has-feedback">      
+        You Are :
+        <input type="radio" name="status" class="input-xlarge" value="1" checked /> Farmer 
+         &nbsp; &nbsp; 
+        <input type="radio" name="status" class="input-xlarge" value="2" 
+         /> Crop Science
+      </div>
+      <div class="form-group has-feedback"style="height:30px">      
+        Account:<input style="width: 268px" type="text" name="username" class="form-control" placeholder="account">  
+      </div>
+      <div class="form-group has-feedback"style="height:30px">
+        NickName:<input style="width: 248px" type="text" name="nickname" class="form-control" placeholder="nickname">
+       
+      </div>
+      <div class="form-group has-feedback"style="height:50px">
+        Password:<input  style="width:350px;border: 1px solid #000;" type="password" name="pass" class="form-control" placeholder="password">
+        
+      </div>
+
+      <div class="form-group has-feedback"style="height:50px">
+        Re-password:<input  style="width:350px;border: 1px solid #000;" type="password" name="repass" class="form-control" placeholder="re-password">
+       
+      </div>
+     
+      <div style="float: left ; width :50%;">
+        <center><button  style="background-color: aqua ;width: 90px ;height:30px" type="submit" >Submit </button></center>
+      </div>
+      <div> 
+        <center> <button  style="background-color: aqua ;width: 90px ;height:30px"type="reset" >Reset </button></center>
+        </div>
+        
+        <!-- /.col -->
+     
+       
+   
+      <div style="background-color: black;">     
+        <a style="color: white;"href="{% url 'mobile_login' %}"> <center>Go Login </center> </a>
+        <!-- /.col -->
+      </div>
+     
+    </form>
+
+    
+
+    
+</article>
+
+{% endblock %}
+
+{% block myjavascript %}
+<script type="text/javascript">
+	$("button:contains('点击获取')").click(function(){
+		bt = $(this);
+		if(bt.html() != "点击获取"){
+			return;
+		}
+		var phone = $("#name").val();
+		//$.get();
+		bt = $(this);
+		var t=60;
+		bt.html(t+"秒")
+		var mytime = setInterval(function(){
+			t= t-1;
+			bt.html(t+"秒")
+			if(t <= 0){
+				clearInterval(mytime)
+				bt.html("点击获取");
+			}
+		},1000);
+		
+	});
+</script>
+{% endblock %}
