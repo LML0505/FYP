@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-g3wv$abqbs0^+sh%d!!2^+r#n!k)u0)04q9vi*-4+(_y-iwkg8
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True 
+# change to false while u deploy
 
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.2.240']
@@ -85,7 +86,9 @@ DATABASES = {
         'PASSWORD': 'Lml1997!',
         'HOST': 'localhost',
         'PORT': '3306',
-    },
+        #'TEST_CHARSER':'utf8',
+        #'TEST_COLLATION':'utf8_general_ci',
+    }
 }
 
 # Password validation

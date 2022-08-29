@@ -13,7 +13,7 @@ from myadmin.models import Account
 # create your views here 
 
 def index(request,pIndex=1):
-    '''浏览信息'''
+    
     umod = Account.objects
     wuser=request.session.get('webuser',None)
        
@@ -23,7 +23,7 @@ def index(request,pIndex=1):
     #get search and find 
     kw=request.GET.get("keyword",None)
     if kw:
-        ulist =ulist.filter(Q(username__contains=kw)|Q(nickname__contains=kw))
+        ulist =ulist.filter(Q(account__contains=kw)|Q(nickname__contains=kw))
         mywhere.append('keyword='+kw)
     # 分页 seperate page
     pIndex=int(pIndex)

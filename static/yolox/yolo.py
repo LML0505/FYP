@@ -23,41 +23,30 @@ from static.yolox.utils.utils_bbox import decode_outputs, non_max_suppression
 
 class YOLO(object):
     _defaults = {
-        # --------------------------------------------------------------------------#
-        #   使用自己训练好的模型进行预测一定要修改model_path和classes_path！
-        #   model_path指向logs文件夹下的权值文件，classes_path指向model_data下的txt
-        #
-        #   训练好后logs文件夹下存在多个权值文件，选择验证集损失较低的即可。
-        #   验证集损失较低不代表mAP较高，仅代表该权值在验证集上泛化性能较好。
-        #   如果出现shape不匹配，同时要注意训练时的model_path和classes_path参数的修改
-        # --------------------------------------------------------------------------#
+        # model path and class path for model 
         "model_path": 'static/yolox/logs/best_epoch_weights.pth',
         "classes_path": 'static/yolox/model_data/my_class.txt',
         # ---------------------------------------------------------------------#
-        #   输入图片的大小，必须为32的倍数。
+        #  picture size 
         # ---------------------------------------------------------------------#
         "input_shape": [640, 640],
         # ---------------------------------------------------------------------#
-        #   所使用的YoloX的版本。nano、tiny、s、m、l、x
+        #   YoloX versionnano、tiny、s、m、l、x
         # ---------------------------------------------------------------------#
         "phi": 's',
         # ---------------------------------------------------------------------#
-        #   只有得分大于置信度的预测框会被保留下来
+        #   only confidence bigger than 0.5 willbe save 
         # ---------------------------------------------------------------------#
         "confidence": 0.5,
         # ---------------------------------------------------------------------#
-        #   非极大抑制所用到的nms_iou大小
-        # ---------------------------------------------------------------------#
+        #   for non-maximum restraining  nms_iou
+        # --------------------------------------------------------------------#
         "nms_iou": 0.3,
         # ---------------------------------------------------------------------#
-        #   该变量用于控制是否使用letterbox_image对输入图像进行不失真的resize，
-        #   在多次测试后，发现关闭letterbox_image直接resize的效果更好
+        #   if use letterbox_image for input picture resize，but at last find dun use is better 
         # ---------------------------------------------------------------------#
         "letterbox_image": True,
-        # -------------------------------#
-        #   是否使用Cuda
-        #   没有GPU可以设置成False
-        # -------------------------------#
+     
         "cuda": False,
     }
 
@@ -111,21 +100,19 @@ class YOLO(object):
     # ---------------------------------------------------#
     def detect_image(self, image, crop=False, count=True):
         # ---------------------------------------------------#
-        #   获得输入图片的高和宽
+        #   input pictue height and width 
         # ---------------------------------------------------#
         image_shape = np.array(np.shape(image)[0:2])
         # ---------------------------------------------------------#
-        #   在这里将图像转换成RGB图像，防止灰度图在预测时报错。
-        #   代码仅仅支持RGB图像的预测，所有其它类型的图像都会转化成RGB
+        #  Change picture to RPG in case of the gray pictre influence 
         # ---------------------------------------------------------#
         image = cvtColor(image)
         # ---------------------------------------------------------#
-        #   给图像增加灰条，实现不失真的resize
-        #   也可以直接resize进行识别
+        #   resize picture and no anamorphose
         # ---------------------------------------------------------#
         image_data = resize_image(image, (self.input_shape[1], self.input_shape[0]), self.letterbox_image)
         # ---------------------------------------------------------#
-        #   添加上batch_size维度
+        #  add batch_size
         # ---------------------------------------------------------#
         image_data = np.expand_dims(np.transpose(preprocess_input(np.array(image_data, dtype='float32')), (2, 0, 1)), 0)
 
@@ -134,12 +121,12 @@ class YOLO(object):
             if self.cuda:
                 images = images.cuda()
             # ---------------------------------------------------------#
-            #   将图像输入网络当中进行预测！
+            #   bring picture to net for test 
             # ---------------------------------------------------------#
             outputs = self.net(images)
             outputs = decode_outputs(outputs, self.input_shape)
             # ---------------------------------------------------------#
-            #   将预测框进行堆叠，然后进行非极大抑制
+            #   make no max suppression 
             # ---------------------------------------------------------#
             results = non_max_suppression(outputs, self.num_classes, self.input_shape,
                                           image_shape, self.letterbox_image, conf_thres=self.confidence,
@@ -152,17 +139,17 @@ class YOLO(object):
             top_conf = results[0][:, 4] * results[0][:, 5]
             top_boxes = results[0][:, :4]
         # ---------------------------------------------------------#
-        #   设置字体与边框厚度 model_data/simhei
+        #   set font and border model_data/simhei
         # ---------------------------------------------------------#
         font = ImageFont.truetype(font='static/arial.ttf',
                                   size=np.floor(1e-2 * image.size[1] + 0.5).astype('int32'))
         # thickness = int(max((image.size[0] + image.size[1]) // np.mean(self.input_shape), 1))
         thickness = 4
         # ---------------------------------------------------------#
-        #   计数
+        #   counting
         # ---------------------------------------------------------#
         if count:
-            print("top_label:", top_label)
+            #print("top_label:", top_label)
             classes_nums = np.zeros([self.num_classes])
             for i in range(self.num_classes):
                 num = np.sum(top_label == i)
@@ -171,7 +158,7 @@ class YOLO(object):
                 classes_nums[i] = num
             # print("classes_nums:", classes_nums)
         # ---------------------------------------------------------#
-        #   是否进行目标的裁剪
+        #   if make corp 
         # ---------------------------------------------------------#
         if crop:
             for i, c in list(enumerate(top_label)):
@@ -189,7 +176,7 @@ class YOLO(object):
                 print("save crop_" + str(i) + ".png to " + dir_save_path)
 
         # ---------------------------------------------------------#
-        #   图像绘制
+        #   drawing picture 
         # ---------------------------------------------------------#
         for i, c in list(enumerate(top_label)):
             predicted_class = self.class_names[int(c)]

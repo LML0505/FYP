@@ -69,11 +69,11 @@
             <!-- /.box-body -->
             <div class="box-footer clearfix">
               <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="{% url 'web_uhistory' pIndex|add:-1 %}?{{mywhere|join:'&'}}">&laquo;</a></li>
+                <li><a href="{% url 'web_label_index' pIndex|add:-1 %}?{{mywhere|join:'&'}}">&laquo;</a></li>
                 {% for p in plist %}
-                  <li {% if pIndex == p %}class="active"{% endif %}><a href="{% url 'web_uhistory' p %}?{{mywhere|join:'&'}}">{{ p }}</a></li>
+                  <li {% if pIndex == p %}class="active"{% endif %}><a href="{% url 'web_label_index' p %}?{{mywhere|join:'&'}}">{{ p }}</a></li>
                 {% endfor %}
-                <li><a href="{% url 'web_uhistory' pIndex|add:1 %}?{{mywhere|join:'&'}}">&raquo;</a></li>
+                <li><a href="{% url 'web_label_index' pIndex|add:1 %}?{{mywhere|join:'&'}}">&raquo;</a></li>
               </ul>
             </div>
           </div>

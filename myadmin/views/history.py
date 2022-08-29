@@ -19,7 +19,7 @@ def index (request,pIndex=1):
     
     
     mywhere=[]
-    list = Picture.objects.all()
+    list = Picture.objects.filter(status__gt=0)
     list = list.order_by('-create_at')
     #list=list.filter(company_id=cid)
     #if ac.status < 2 :
@@ -147,6 +147,7 @@ def delete(request,pid):
         ob.status = 0
        # ob.update_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ob.save()
+
         context={"info":"delete success ！"}
     except Exception as err:
         print(err)

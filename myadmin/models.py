@@ -1,6 +1,7 @@
+import hashlib
 from django.db import models
 from datetime import datetime
-
+from static.yolox.predict import pred
 # Create your models here.
 
 
@@ -30,7 +31,35 @@ class Account(models.Model):
 
     def toDict(self):
        return {'id':self.id,'company_id':self.company_id,'company_name':self.company_name,'nickname':self.nickname,'account':self.account,'password_hash':self.password_hash,'password_salt':self.password_salt,'status':self.status,'create_at':self.create_at.strftime('%Y-%m-%d %H:%M:%S'),'update_at':self.update_at.strftime('%Y-%m-%d %H:%M:%S')}
+    
+    def setUserStatus(self,status):
+            self.status=status
+            self.save()
+            return self.status
+        
+    def validateLogin(self,username,password):
+       result=0
+       if self.account==username:
+            md5 = hashlib.md5()
+                    #password + salt 
+            s = password+str(self.password_salt)
+            md5.update(s.encode('utf-8'))# put the md5 inside
+                        #make compare with the password_hash in database
+            if self.password_hash == md5.hexdigest():
+                result = 1
 
+       return result 
+
+    def ifadmin(self):
+        if 1<self.status<8:
+            return 1
+        else:
+            return 0
+    def ifstaff(self):
+        if 0<self.status<8:
+            return 1
+        else:
+            return 0
     class Meta:
         db_table = "account"  # 更改表名
 
@@ -50,7 +79,22 @@ class Picture(models.Model):
     def toDict(self):
            return {'submit_pic':self.submit_pic,'user_id':self.user_id,'user_name':self.user_name,'company_id':self.company_id,'company_name':self.company_name,'predict_pic':self.predict_pic,
            'count_result':self.count_result,'status':self.status,'label':self.label,'comment':self.comment,'create_at':self.create_at.strftime('%Y-%m-%d %H:%M:%S')}
-
+    
+    def dosubmitpic(self):
+         self.submit_pic='1658831715.063401.jpg'
+         self.user_id= 1
+         self.user_name= 'test'
+         self.company_id=0
+         self.company_name='company'
+         self.predict_pic='predict'
+         self.count_result=66
+         self.label='farm1'
+         self.comment='nocomment'
+         self.create_at=datetime.now()
+         self.status=1
+                   
+                
+   
         
     class Meta:
             db_table = "picture"  # 更改表名
